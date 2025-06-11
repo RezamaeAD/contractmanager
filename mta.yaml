@@ -1,0 +1,119 @@
+_schema-version: 3.3.0
+ID: fiori-tools-ai
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: fiori-tools-ai-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: fiori-tools-ai-db
+  - name: fiori-tools-ai-auth
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: fiori-tools-ai-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: fiori-tools-ai-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: fiori-tools-ai-app-deployer
+  type: com.sap.application.content
+  path: gen
+  requires:
+  - name: fiori-tools-ai-html5-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: app/
+    requires:
+    - artifacts:
+      - contractmanager.zip
+      name: fioritoolsaicontractmanager
+      target-path: app/
+- name: fioritoolsaicontractmanager
+  type: html5
+  path: app/contractmanager
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm ci
+    - npm run build
+    supported-platforms: []
+- name: fiori-tools-ai-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: fiori-tools-ai-destination-service
+    parameters:
+      content-target: true
+  - name: fiori-tools-ai-html5-repo-host
+    parameters:
+      service-key:
+        name: fiori-tools-ai-html5-repo-host-key
+  - name: fiori-tools-ai-auth
+    parameters:
+      service-key:
+        name: fiori-tools-ai-auth-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: contractmanager_fiori_tools_ai_html5_repo_host
+          ServiceInstanceName: fiori-tools-ai-html5-repo-host
+          ServiceKeyName: fiori-tools-ai-html5-repo-host-key
+          sap.cloud.service: contractmanager
+        - Authentication: OAuth2UserTokenExchange
+          Name: contractmanager_fiori_tools_ai_auth
+          ServiceInstanceName: fiori-tools-ai-auth
+          ServiceKeyName: fiori-tools-ai-auth-key
+          sap.cloud.service: contractmanager
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
+resources:
+- name: fiori-tools-ai-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: fiori-tools-ai-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: fiori-tools-ai-auth
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: fiori-tools-ai-html5-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+- name: fiori-tools-ai-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      version: 1.0.0
+    service: destination
+    service-name: fiori-tools-ai-destination-service
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production

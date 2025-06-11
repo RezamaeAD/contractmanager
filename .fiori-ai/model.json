@@ -1,0 +1,249 @@
+{
+    "namespace": "contractManagement",
+    "entities": [
+        {
+            "name": "Contracts",
+            "label": "Contract",
+            "associations": [
+                {
+                    "name": "Customers",
+                    "target": "Customers",
+                    "multiplicity": "many",
+                    "backAssociation": "contracts"
+                }
+            ],
+            "labelPlural": "Contracts",
+            "elements": [
+                {
+                    "name": "ID",
+                    "type": "UUID",
+                    "key": true,
+                    "label": ""
+                },
+                {
+                    "name": "contractID",
+                    "type": "String(50)",
+                    "label": "Contract ID",
+                    "additionalInfo": "A unique identifier for the contract.",
+                    "essentialElement": true,
+                    "semanticKey": true
+                },
+                {
+                    "name": "contractType",
+                    "type": "String(50)",
+                    "label": "Contract Type",
+                    "additionalInfo": "The type of contract (e.g. sales, service, employment).",
+                    "essentialElement": true,
+                    "values": [
+                        "sales",
+                        "service",
+                        "employment"
+                    ],
+                    "hasFixedValuesList": true,
+                    "hasColorsOrCriticality": false,
+                    "reason": "The contractType property values (sales, service, employment) are typically neutral as they represent different types of contracts without inherent positive or negative connotations.",
+                    "mapping": []
+                },
+                {
+                    "name": "startDate",
+                    "type": "Date",
+                    "label": "Start Date",
+                    "additionalInfo": "The date on which the contract becomes valid.",
+                    "essentialElement": true
+                },
+                {
+                    "name": "endDate",
+                    "type": "Date",
+                    "label": "End Date",
+                    "additionalInfo": "The date on which the contract expires (if applicable).",
+                    "essentialElement": false
+                },
+                {
+                    "name": "status",
+                    "type": "String(50)",
+                    "label": "Status",
+                    "additionalInfo": "The current status of the contract (draft, active, expired, terminated, etc.).",
+                    "essentialElement": false,
+                    "values": [
+                        "draft",
+                        "active",
+                        "expired",
+                        "terminated"
+                    ],
+                    "hasFixedValuesList": true,
+                    "hasColorsOrCriticality": true,
+                    "reason": "The status property values can be considered to have positive, negative, or neutral connotations. For example, 'active' is generally positive, 'expired' and 'terminated' can be negative, and 'draft' is neutral.",
+                    "mapping": [
+                        {
+                            "value": "draft",
+                            "colorOrCriticality": "neutral",
+                            "reason": "The 'draft' status is neutral as it indicates a contract is in preparation and not yet finalized."
+                        },
+                        {
+                            "value": "active",
+                            "colorOrCriticality": "positive",
+                            "reason": "The 'active' status is positive as it indicates a contract is currently in effect and operational."
+                        },
+                        {
+                            "value": "expired",
+                            "colorOrCriticality": "negative",
+                            "reason": "The 'expired' status is negative as it indicates a contract has passed its end date and is no longer valid."
+                        },
+                        {
+                            "value": "terminated",
+                            "colorOrCriticality": "negative",
+                            "reason": "The 'terminated' status is negative as it indicates a contract has been ended before its natural expiration, often due to issues or breaches."
+                        }
+                    ],
+                    "criticalities": [
+                        0,
+                        3,
+                        1,
+                        1
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Customers",
+            "label": "Customer",
+            "associations": [
+                {
+                    "name": "contracts",
+                    "target": "Contracts",
+                    "multiplicity": "one",
+                    "isComposition": false
+                }
+            ],
+            "labelPlural": "Customers",
+            "elements": [
+                {
+                    "name": "ID",
+                    "type": "UUID",
+                    "key": true,
+                    "label": ""
+                },
+                {
+                    "name": "name",
+                    "type": "String(100)",
+                    "label": "Name",
+                    "additionalInfo": "The given name of a person or entity.",
+                    "essentialElement": true
+                },
+                {
+                    "name": "identificationNumber",
+                    "type": "String(50)",
+                    "label": "Identification Number",
+                    "additionalInfo": "A unique identification number for a customer.",
+                    "essentialElement": true,
+                    "semanticKey": true
+                },
+                {
+                    "name": "address",
+                    "type": "String(200)",
+                    "label": "Address",
+                    "additionalInfo": "A physical location where an individual, business, or entity is situated or can be reached.",
+                    "essentialElement": false
+                },
+                {
+                    "name": "contactInformation",
+                    "type": "String(100)",
+                    "label": "Contact Information",
+                    "additionalInfo": "Contact details for the customer.",
+                    "essentialElement": false
+                }
+            ]
+        }
+    ],
+    "service": {
+        "name": "contractManagementSrv",
+        "path": "srv/service.cds"
+    },
+    "applications": [
+        {
+            "pages": [
+                {
+                    "type": "ListReport",
+                    "entityType": "Contracts",
+                    "listReportContent": {
+                        "loadDataOnAppLaunch": "Enabled",
+                        "tables": [
+                            {
+                                "title": "Contracts",
+                                "id": "contractsTable",
+                                "baseEntityType": "Contracts",
+                                "columns": [
+                                    "contractID",
+                                    "Customers/name",
+                                    "contractType",
+                                    "startDate"
+                                ]
+                            },
+                            {
+                                "title": "Customers",
+                                "id": "customersTable",
+                                "baseEntityType": "Contracts",
+                                "columns": [
+                                    "Customers/name",
+                                    "Customers/identificationNumber",
+                                    "Customers/address",
+                                    "Customers/contactInformation"
+                                ]
+                            }
+                        ],
+                        "filters": [
+                            "contractType",
+                            "status",
+                            "startDate"
+                        ]
+                    }
+                },
+                {
+                    "type": "ObjectPage",
+                    "entityType": "Contracts",
+                    "objectPageContent": {
+                        "tableSectionAssociations": [
+                            "Customers"
+                        ],
+                        "sections": [
+                            {
+                                "title": "Contract Details",
+                                "id": "contractDetailsSection",
+                                "isTableSection": false,
+                                "fields": [
+                                    "contractID",
+                                    "contractType",
+                                    "status",
+                                    "startDate",
+                                    "endDate"
+                                ]
+                            },
+                            {
+                                "title": "Customers",
+                                "id": "customersSection",
+                                "isTableSection": true,
+                                "fields": [
+                                    "Customers/name",
+                                    "Customers/identificationNumber",
+                                    "Customers/address",
+                                    "Customers/contactInformation"
+                                ]
+                            }
+                        ],
+                        "tabs": [
+                            {
+                                "title": "Contract Data",
+                                "id": "contractDataTab",
+                                "subsections": [
+                                    "contractDetailsSection",
+                                    "customersSection"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ],
+            "name": "contractManager"
+        }
+    ]
+}

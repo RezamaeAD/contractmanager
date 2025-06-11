@@ -1,0 +1,8 @@
+ID;identificationNumber;name;address;contactInformation;contracts_ID
+62a9d964-b1ca-4c57-9adb-be16309f20a5;ID001;John Doe;123 Elm Street, Springfield;johndoe@example.com;666e8c40-4bd9-49af-ba1a-ddf45567e688
+274d7a42-1516-4f45-a2dc-d57a495a20b9;ID002;Jane Smith;456 Oak Avenue, Metropolis;janesmith@example.com;3597756b-deef-46d2-aa2b-75edde4cda19
+137365e3-12c3-4f97-92ce-162dcfbf567c;ID003;Acme Corp;789 Pine Road, Gotham;contact@acmecorp.com;4b09c1a3-ff61-442f-a745-040ef9a3c058
+c0f07d44-44f4-436f-82b0-4f931e4ed88f;ID004;Bob Johnson;321 Maple Lane, Smallville;bob.johnson@example.com;b9420335-3c6d-4e37-bc4b-de3c0b505d3d
+70f13c95-b332-4e14-9704-5e87d7f58200;ID005;Global Services;654 Cedar Blvd, Star City;info@globalservices.com;8cc59dbb-a6d0-45a7-858d-5e1d37df7f67
+b6cd0a02-f99e-4d93-b5de-75ca810527f9;ID006;Alice Brown;987 Birch Street, Central City;alice.brown@example.com;666e8c40-4bd9-49af-ba1a-ddf45567e688
+b4146cc1-e814-4e0d-a755-7b7979651b9f;ID007;Tech Solutions;159 Spruce Drive, Coast City;support@techsolutions.com;3597756b-deef-46d2-aa2b-75edde4cda19

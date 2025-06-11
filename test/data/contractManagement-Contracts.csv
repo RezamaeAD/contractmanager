@@ -1,0 +1,6 @@
+ID;contractID;contractType_code;startDate;endDate;status_code
+666e8c40-4bd9-49af-ba1a-ddf45567e688;C001;sales;2023-01-15;2024-01-15;active
+3597756b-deef-46d2-aa2b-75edde4cda19;C002;service;2023-03-01;2023-09-01;expired
+4b09c1a3-ff61-442f-a745-040ef9a3c058;C003;employment;2023-05-10;;active
+b9420335-3c6d-4e37-bc4b-de3c0b505d3d;C004;sales;2023-06-20;2023-12-20;draft
+8cc59dbb-a6d0-45a7-858d-5e1d37df7f67;C005;service;2023-07-01;2024-07-01;active
