@@ -9,7 +9,7 @@
 |**Service Type**<br>Local Cap|
 |**Service URL**<br>http://localhost:4004/odata/v4/contract-management-srv/|
 |**Module Name**<br>contractmanager|
-|**Application Title**<br>AI generated App contractmanager|
+|**Application Title**<br>App contractmanager|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.132.1|
@@ -20,7 +20,7 @@
 
 ## contractmanager
 
-AI generated App contractmanager
+App contractmanager
 
 ### Starting the generated app
 
